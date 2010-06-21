@@ -10,5 +10,12 @@
 
   </extension>
 
+   <extension target="jaxws#ENDPOINT">
+    <endpoint name="exalead"
+      implementation="org.nuxeo.ecm.platform.exalead.ws.WSExaleadBean"
+      url-pattern="/webservices/exalead" />
+  </extension>
+
+
 </fragment>
 

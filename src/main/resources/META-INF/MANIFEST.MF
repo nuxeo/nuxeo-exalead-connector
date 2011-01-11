@@ -8,3 +8,4 @@ Require-Bundle: org.nuxeo.ecm.platform,
  org.nuxeo.ecm.platform.indexing.gateway 
 Provide-Package: org.nuxeo.ecm.platform.exalead.ws.api,
  org.nuxeo.ecm.platform.exalead.ws
+Nuxeo-Component: OSGI-INF/exalead-adapter-contrib.xml

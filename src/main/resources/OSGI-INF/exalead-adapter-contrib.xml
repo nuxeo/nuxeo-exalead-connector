@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component
+  name="org.nuxeo.ecm.platform.exalead.adapter.defaultAdapters">
+
+
+  <extension
+    target="org.nuxeo.ecm.platform.indexing.gateway.adapter.IndexingAdapterService"
+    point="adapters">
+
+    <adapter
+      class="org.nuxeo.ecm.platform.exalead.ws.NoteBlobAdapter"
+      order="10" enabled="true" />
+
+  </extension>
+
+</component>

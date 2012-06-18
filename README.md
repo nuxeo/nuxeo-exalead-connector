@@ -1,6 +1,12 @@
 # Nuxeo Exalead Connector
 
-This addon provides a connector for Exalead search engine: a webservice that can be used from Exalead to index content of Nuxeo EP in Intuition.
+This addon provides a connector for Exalead search engine: a webservice that can be used from Exalead to index content of Nuxeo Repository.
+
+## About this connector
+
+This connector is a simple Wrapper around [nuxeo-platform-indexing-gateway https://github.com/nuxeo/nuxeo-platform-indexing-gateway] and simply provides a way to change the WS namespace and contribute some custom ACL extraction policies.
+
+You can access the WSDL via http://nuxeoserver:8080/nuxeo/webservices/exalead?wsdl.
 
 ## About Nuxeo
 

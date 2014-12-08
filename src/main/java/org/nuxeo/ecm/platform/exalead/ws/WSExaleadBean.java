@@ -36,15 +36,13 @@ public class WSExaleadBean extends WSIndexingGatewayBean implements WSExalead {
      */
     private static final long serialVersionUID = 87687687681L;
 
-
     @Override
     @WebMethod
-    public DocumentDescriptor[] getChildren(
-            @WebParam(name = "sessionId") String sessionId,
+    public DocumentDescriptor[] getChildren(@WebParam(name = "sessionId") String sessionId,
             @WebParam(name = "uuid") String uuid) throws ClientException {
         WSRemotingSession rs = initSession(sessionId);
         LifeCycleFilter filter = new LifeCycleFilter("deleted", false);
-        DocumentModelList docList = rs.getDocumentManager().getChildren(new IdRef(uuid), null, null, filter,null);
+        DocumentModelList docList = rs.getDocumentManager().getChildren(new IdRef(uuid), null, null, filter, null);
         DocumentDescriptor[] docs = new DocumentDescriptor[docList.size()];
         int i = 0;
         for (DocumentModel doc : docList) {
@@ -55,7 +53,9 @@ public class WSExaleadBean extends WSIndexingGatewayBean implements WSExalead {
 
     @Override
     @WebMethod
-    public UUIDPage getRecursiveChildrenUUIDsByPage(@WebParam(name = "sessionId") String sid, @WebParam(name = "uuid") String uuid , @WebParam(name = "page") int page, @WebParam(name = "pageSize") int pageSize) throws ClientException {
+    public UUIDPage getRecursiveChildrenUUIDsByPage(@WebParam(name = "sessionId") String sid,
+            @WebParam(name = "uuid") String uuid, @WebParam(name = "page") int page,
+            @WebParam(name = "pageSize") int pageSize) throws ClientException {
 
         CoreSession session = initSession(sid).getDocumentManager();
 
@@ -64,34 +64,34 @@ public class WSExaleadBean extends WSIndexingGatewayBean implements WSExalead {
         DocumentModel parent = session.getDocument(parentRef);
         String path = parent.getPathAsString();
 
-        String query = "select ecm:uuid from Document where ecm:path startswith '" + path + " AND ecm:currentLifeCycleState != 'deleted' order by ecm:uuid";
+        String query = "select ecm:uuid from Document where ecm:path startswith '" + path
+                + " AND ecm:currentLifeCycleState != 'deleted' order by ecm:uuid";
 
         IterableQueryResult result = session.queryAndFetch(query, "NXQL");
         boolean hasMore = false;
         try {
-            if (page>1) {
-                int skip=(page-1)*pageSize;
+            if (page > 1) {
+                int skip = (page - 1) * pageSize;
                 result.skipTo(skip);
             }
 
-            for (Map<String, Serializable> record:result) {
-                uuids.add((String)record.get(NXQL.ECM_UUID));
-                if (uuids.size()==pageSize) {
-                    hasMore=true;
+            for (Map<String, Serializable> record : result) {
+                uuids.add((String) record.get(NXQL.ECM_UUID));
+                if (uuids.size() == pageSize) {
+                    hasMore = true;
                     break;
                 }
             }
-        }
-        finally {
+        } finally {
             result.close();
         }
-        return new UUIDPage(uuids.toArray(new String[uuids.size()]),page,hasMore) ;
+        return new UUIDPage(uuids.toArray(new String[uuids.size()]), page, hasMore);
     }
-
 
     @Override
     @WebMethod
-    public String[] getRecursiveChildrenUUIDs(@WebParam(name = "sessionId") String sid, @WebParam(name = "uuid") String uuid ) throws ClientException {
+    public String[] getRecursiveChildrenUUIDs(@WebParam(name = "sessionId") String sid,
+            @WebParam(name = "uuid") String uuid) throws ClientException {
 
         CoreSession session = initSession(sid).getDocumentManager();
 
@@ -100,16 +100,16 @@ public class WSExaleadBean extends WSIndexingGatewayBean implements WSExalead {
         DocumentModel parent = session.getDocument(parentRef);
         String path = parent.getPathAsString();
 
-        String query = "select ecm:uuid from Document where ecm:path startswith '" + path + "'  AND ecm:currentLifeCycleState != 'deleted' order by ecm:uuid";
+        String query = "select ecm:uuid from Document where ecm:path startswith '" + path
+                + "'  AND ecm:currentLifeCycleState != 'deleted' order by ecm:uuid";
 
         IterableQueryResult result = session.queryAndFetch(query, "NXQL");
 
         try {
-            for (Map<String, Serializable> record:result) {
-                uuids.add((String)record.get(NXQL.ECM_UUID));
+            for (Map<String, Serializable> record : result) {
+                uuids.add((String) record.get(NXQL.ECM_UUID));
             }
-        }
-        finally {
+        } finally {
             result.close();
         }
 

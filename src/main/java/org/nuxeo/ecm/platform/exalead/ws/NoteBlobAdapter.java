@@ -20,29 +20,29 @@ public class NoteBlobAdapter extends BaseIndexingAdapter implements IndexingAdap
     protected static final Log log = LogFactory.getLog(NoteBlobAdapter.class);
 
     @Override
-    public DocumentBlob[] adaptDocumentBlobs(CoreSession session, String uuid,
-            DocumentBlob[] blobs) throws ClientException {
+    public DocumentBlob[] adaptDocumentBlobs(CoreSession session, String uuid, DocumentBlob[] blobs)
+            throws ClientException {
 
         DocumentModel doc = session.getDocument(new IdRef(uuid));
         if ("Note".equals(doc.getType())) {
 
             BlobHolder bh = doc.getAdapter(BlobHolder.class);
-            if (bh!=null && bh.getBlob()!=null) {
+            if (bh != null && bh.getBlob() != null) {
                 try {
-                    String url = "/nxbigfile/" + doc.getRepositoryName() + "/" + uuid + "/blobholder:0/" + bh.getBlob().getFilename();
-                    //DocumentBlob db = new DocumentBlob(bh.getBlob().getFilename(), bh.getBlob());
+                    String url = "/nxbigfile/" + doc.getRepositoryName() + "/" + uuid + "/blobholder:0/"
+                            + bh.getBlob().getFilename();
+                    // DocumentBlob db = new DocumentBlob(bh.getBlob().getFilename(), bh.getBlob());
                     Blob blob = bh.getBlob();
-                    DocumentBlob db = new DocumentBlob(blob.getFilename(),blob.getEncoding(), blob.getMimeType(), url);
+                    DocumentBlob db = new DocumentBlob(blob.getFilename(), blob.getEncoding(), blob.getMimeType(), url);
                     List<DocumentBlob> dbs = new ArrayList<DocumentBlob>();
                     dbs.add(db);
-                    if (blobs!=null) {
+                    if (blobs != null) {
                         for (DocumentBlob dbi : blobs) {
                             dbs.add(dbi);
                         }
                     }
                     return dbs.toArray(new DocumentBlob[dbs.size()]);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                 }
             }
         }

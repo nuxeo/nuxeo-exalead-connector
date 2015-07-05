@@ -39,7 +39,7 @@ public class WSExaleadBean extends WSIndexingGatewayBean implements WSExalead {
     @Override
     @WebMethod
     public DocumentDescriptor[] getChildren(@WebParam(name = "sessionId") String sessionId,
-            @WebParam(name = "uuid") String uuid) throws ClientException {
+            @WebParam(name = "uuid") String uuid) {
         WSRemotingSession rs = initSession(sessionId);
         LifeCycleFilter filter = new LifeCycleFilter("deleted", false);
         DocumentModelList docList = rs.getDocumentManager().getChildren(new IdRef(uuid), null, null, filter, null);
@@ -55,7 +55,7 @@ public class WSExaleadBean extends WSIndexingGatewayBean implements WSExalead {
     @WebMethod
     public UUIDPage getRecursiveChildrenUUIDsByPage(@WebParam(name = "sessionId") String sid,
             @WebParam(name = "uuid") String uuid, @WebParam(name = "page") int page,
-            @WebParam(name = "pageSize") int pageSize) throws ClientException {
+            @WebParam(name = "pageSize") int pageSize) {
 
         CoreSession session = initSession(sid).getDocumentManager();
 
@@ -91,7 +91,7 @@ public class WSExaleadBean extends WSIndexingGatewayBean implements WSExalead {
     @Override
     @WebMethod
     public String[] getRecursiveChildrenUUIDs(@WebParam(name = "sessionId") String sid,
-            @WebParam(name = "uuid") String uuid) throws ClientException {
+            @WebParam(name = "uuid") String uuid) {
 
         CoreSession session = initSession(sid).getDocumentManager();
 

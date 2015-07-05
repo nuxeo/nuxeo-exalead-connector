@@ -21,7 +21,7 @@ public class NoteBlobAdapter extends BaseIndexingAdapter implements IndexingAdap
 
     @Override
     public DocumentBlob[] adaptDocumentBlobs(CoreSession session, String uuid, DocumentBlob[] blobs)
-            throws ClientException {
+            {
 
         DocumentModel doc = session.getDocument(new IdRef(uuid));
         if ("Note".equals(doc.getType())) {

@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.nuxeo.ecm.core.api.Blob;
-import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.IdRef;
@@ -28,22 +27,19 @@ public class NoteBlobAdapter extends BaseIndexingAdapter implements IndexingAdap
 
             BlobHolder bh = doc.getAdapter(BlobHolder.class);
             if (bh != null && bh.getBlob() != null) {
-                try {
-                    String url = "/nxbigfile/" + doc.getRepositoryName() + "/" + uuid + "/blobholder:0/"
-                            + bh.getBlob().getFilename();
-                    // DocumentBlob db = new DocumentBlob(bh.getBlob().getFilename(), bh.getBlob());
-                    Blob blob = bh.getBlob();
-                    DocumentBlob db = new DocumentBlob(blob.getFilename(), blob.getEncoding(), blob.getMimeType(), url);
-                    List<DocumentBlob> dbs = new ArrayList<DocumentBlob>();
-                    dbs.add(db);
-                    if (blobs != null) {
-                        for (DocumentBlob dbi : blobs) {
-                            dbs.add(dbi);
-                        }
+                String url = "/nxbigfile/" + doc.getRepositoryName() + "/" + uuid + "/blobholder:0/"
+                        + bh.getBlob().getFilename();
+                // DocumentBlob db = new DocumentBlob(bh.getBlob().getFilename(), bh.getBlob());
+                Blob blob = bh.getBlob();
+                DocumentBlob db = new DocumentBlob(blob.getFilename(), blob.getEncoding(), blob.getMimeType(), url);
+                List<DocumentBlob> dbs = new ArrayList<DocumentBlob>();
+                dbs.add(db);
+                if (blobs != null) {
+                    for (DocumentBlob dbi : blobs) {
+                        dbs.add(dbi);
                     }
-                    return dbs.toArray(new DocumentBlob[dbs.size()]);
-                } catch (Exception e) {
                 }
+                return dbs.toArray(new DocumentBlob[dbs.size()]);
             }
         }
         return blobs;

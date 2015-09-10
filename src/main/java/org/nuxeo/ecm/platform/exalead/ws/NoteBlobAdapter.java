@@ -10,9 +10,11 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.api.blobholder.BlobHolder;
+import org.nuxeo.ecm.core.io.download.DownloadService;
 import org.nuxeo.ecm.platform.api.ws.DocumentBlob;
 import org.nuxeo.ecm.platform.indexing.gateway.adapter.BaseIndexingAdapter;
 import org.nuxeo.ecm.platform.indexing.gateway.adapter.IndexingAdapter;
+import org.nuxeo.runtime.api.Framework;
 
 public class NoteBlobAdapter extends BaseIndexingAdapter implements IndexingAdapter {
 
@@ -27,9 +29,9 @@ public class NoteBlobAdapter extends BaseIndexingAdapter implements IndexingAdap
 
             BlobHolder bh = doc.getAdapter(BlobHolder.class);
             if (bh != null && bh.getBlob() != null) {
-                String url = "/nxbigfile/" + doc.getRepositoryName() + "/" + uuid + "/blobholder:0/"
-                        + bh.getBlob().getFilename();
-                // DocumentBlob db = new DocumentBlob(bh.getBlob().getFilename(), bh.getBlob());
+                DownloadService downloadService = Framework.getService(DownloadService.class);
+                String filename = bh.getBlob().getFilename();
+                String url = "/" + downloadService.getDownloadUrl(doc, DownloadService.BLOBHOLDER_0, filename);
                 Blob blob = bh.getBlob();
                 DocumentBlob db = new DocumentBlob(blob.getFilename(), blob.getEncoding(), blob.getMimeType(), url);
                 List<DocumentBlob> dbs = new ArrayList<DocumentBlob>();

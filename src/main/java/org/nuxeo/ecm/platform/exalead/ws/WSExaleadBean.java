@@ -53,10 +53,21 @@ public class WSExaleadBean extends WSIndexingGatewayBean implements WSExalead {
      */
     private static final long serialVersionUID = 87687687681L;
 
+    protected static boolean DEPRECATION_DONE;
+
+    protected static void logDeprecation() {
+        if (!DEPRECATION_DONE) {
+            DEPRECATION_DONE = true;
+            log.warn("The SOAP endpoint /webservices/indexinggateway"
+                    + " is DEPRECATED since Nuxeo 9.3 and will be removed in a future version");
+        }
+    }
+
     @Override
     @WebMethod
     public DocumentDescriptor[] getChildren(@WebParam(name = "sessionId") String sessionId,
             @WebParam(name = "uuid") String uuid) {
+        logDeprecation();
         WSRemotingSession rs = initSession(sessionId);
         LifeCycleFilter filter = new LifeCycleFilter("deleted", false);
         DocumentModelList docList = rs.getDocumentManager().getChildren(new IdRef(uuid), null, null, filter, null);
@@ -73,6 +84,7 @@ public class WSExaleadBean extends WSIndexingGatewayBean implements WSExalead {
     public UUIDPage getRecursiveChildrenUUIDsByPage(@WebParam(name = "sessionId") String sid,
             @WebParam(name = "uuid") String uuid, @WebParam(name = "page") int page,
             @WebParam(name = "pageSize") int pageSize) {
+        logDeprecation();
 
         CoreSession session = initSession(sid).getDocumentManager();
 
@@ -109,6 +121,7 @@ public class WSExaleadBean extends WSIndexingGatewayBean implements WSExalead {
     @WebMethod
     public String[] getRecursiveChildrenUUIDs(@WebParam(name = "sessionId") String sid,
             @WebParam(name = "uuid") String uuid) {
+        logDeprecation();
 
         CoreSession session = initSession(sid).getDocumentManager();
 

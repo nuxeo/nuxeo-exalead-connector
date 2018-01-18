@@ -94,7 +94,7 @@ public class WSExaleadBean extends WSIndexingGatewayBean implements WSExalead {
         String path = parent.getPathAsString();
 
         String query = "select ecm:uuid from Document where ecm:path startswith '" + path
-                + " AND ecm:currentLifeCycleState != 'deleted' order by ecm:uuid";
+                + " AND ecm:isTrashed = 0 order by ecm:uuid";
 
         IterableQueryResult result = session.queryAndFetch(query, "NXQL");
         boolean hasMore = false;
@@ -131,7 +131,7 @@ public class WSExaleadBean extends WSIndexingGatewayBean implements WSExalead {
         String path = parent.getPathAsString();
 
         String query = "select ecm:uuid from Document where ecm:path startswith '" + path
-                + "'  AND ecm:currentLifeCycleState != 'deleted' order by ecm:uuid";
+                + "'  AND ecm:isTrashed = 0 order by ecm:uuid";
 
         IterableQueryResult result = session.queryAndFetch(query, "NXQL");
 

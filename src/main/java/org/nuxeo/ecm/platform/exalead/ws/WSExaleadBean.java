@@ -30,14 +30,12 @@ import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
 import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.ecm.core.api.DataModel;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.Filter;
 import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.api.IterableQueryResult;
-import org.nuxeo.ecm.core.api.impl.LifeCycleFilter;
 import org.nuxeo.ecm.core.query.sql.NXQL;
-import org.nuxeo.ecm.platform.api.ws.DocumentBlob;
 import org.nuxeo.ecm.platform.api.ws.DocumentDescriptor;
 import org.nuxeo.ecm.platform.api.ws.session.WSRemotingSession;
 import org.nuxeo.ecm.platform.exalead.ws.api.WSExalead;
@@ -69,7 +67,7 @@ public class WSExaleadBean extends WSIndexingGatewayBean implements WSExalead {
             @WebParam(name = "uuid") String uuid) {
         logDeprecation();
         WSRemotingSession rs = initSession(sessionId);
-        LifeCycleFilter filter = new LifeCycleFilter("deleted", false);
+        Filter filter = docModel -> !docModel.isTrashed();
         DocumentModelList docList = rs.getDocumentManager().getChildren(new IdRef(uuid), null, null, filter, null);
         DocumentDescriptor[] docs = new DocumentDescriptor[docList.size()];
         int i = 0;
